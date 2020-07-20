@@ -1,31 +1,63 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import Axios from 'axios';
+// import PropTypes from 'prop-types';
+import PostApi from '../../api/postApi';
 
-Post.propTypes = {
-    
-};
+function Post() {
+    const [postList, setPostList] = useState([])
 
-const [post, setPost] = useState([])
-
-function Post(props) {
-
-    useEffect( () => {
-        async function getPost() {
+    const [posts , setPosts] = useState([]);
+    useEffect(() => {
+        const fetchPostList = async () => {
             try {
-                const response = Axios.get('https://jsonplaceholder.typicode.com/todos');    
-                setPost[response];
+                const param = {
+                    id : 3,
+                };
+                let response = await PostApi.getAll(param);
+                setPostList(response);
             } catch (error) {
-                console.log("Field data get api" )
+                console.log(error)
             }
         }
-        getPost();
-        console.log(post);
+        fetchPostList();
+        console.log(postList);
     }, [])
+
+    useEffect(() => {
+        const createPost = async () => {
+            try {
+                const params = {
+                    title: 'service mefun',
+                    body: 'test  post ',
+                    userId: 1000
+                }
+
+                const response = await PostApi.create(params);
+                setPosts(response);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        createPost();
+        console.log(posts);
+    }, [])
+
+    function removePost(id){
+        // const newPostList = [...postList];
+        // newPostList.filter(
+        //      newPostList.id = id
+        // ).splice(id);
+        // setPostList(newPostList);
+    }
     return (
-        <div>
-            
-        </div>
+        <ul>
+            {postList.map( (item, index) => (
+              <li
+                key={item.id}
+              >
+                {item.title}
+              </li>  
+            ))}
+        </ul>
     );
 }
 
