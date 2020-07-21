@@ -1,6 +1,6 @@
 
 const initialState = {
-    list: ['Learn React'],
+    list: [],
     selectedId: null,
 }
 const taskReducer = (state = initialState, action) => {
